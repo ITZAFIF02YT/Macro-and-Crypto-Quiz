@@ -4,94 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz Crypto & Ekonomi Makro Indonesia</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="shortcut icon" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <!-- Bootstrap lokal -->
   <link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css">
+
+  <!-- Google Fonts (CDN) -->
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg-dark:#0D0F1A;--card-bg:#141726;--accent-green:#00F5A0;--accent-purple:#7B61FF;--danger:#FF4C6A;--text-light:#E8EAF6;--card-border:rgba(123,97,255,.15);--glass:rgba(20,23,38,.85)}
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Inter',sans-serif;background:var(--bg-dark);color:var(--text-light);min-height:100vh;overflow-x:hidden}
-    h1,h2,h3,h4,h5,h6,.display-font{font-family:'Space Grotesk',sans-serif}
-    .screen{display:none;min-height:100vh;animation:fadeIn .4s ease}
-    .screen.active{display:flex;flex-direction:column}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes slideInRight{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
-    @keyframes slideOutLeft{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-60px)}}
-    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-    @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
-    @keyframes glow-green{0%,100%{box-shadow:0 0 8px var(--accent-green)}50%{box-shadow:0 0 20px var(--accent-green)}}
-    @keyframes glow-red{0%,100%{box-shadow:0 0 8px var(--danger)}50%{box-shadow:0 0 20px var(--danger)}}
-    @keyframes timerPulse{0%,100%{opacity:1}50%{opacity:.6}}
-    .card-custom{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;backdrop-filter:blur(10px)}
-    .btn-accent{background:linear-gradient(135deg,var(--accent-green),#00c97d);color:#0D0F1A;font-weight:700;border:none;border-radius:12px;padding:12px 32px;font-size:1.05rem;transition:all .3s}
-    .btn-accent:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,245,160,.3);color:#0D0F1A}
-    .btn-accent:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
-    .btn-purple{background:linear-gradient(135deg,var(--accent-purple),#5a3fd6);color:#fff;font-weight:600;border:none;border-radius:12px;padding:12px 32px;transition:all .3s}
-    .btn-purple:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(123,97,255,.3);color:#fff}
-    .progress-track{height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
-    .progress-fill{height:100%;border-radius:4px;transition:width .4s ease;background:linear-gradient(90deg,var(--accent-green),var(--accent-purple))}
-    .timer-bar-track{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-top:8px}
-    .timer-bar-fill{height:100%;border-radius:3px;transition:width 1s linear,background .5s}
-    .timer-text{font-size:.85rem;font-weight:600;font-family:'Space Grotesk',sans-serif}
-    .timer-danger{animation:timerPulse .5s infinite;color:var(--danger)!important}
-    .option-card{background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 18px;cursor:pointer;transition:all .25s;display:flex;align-items:flex-start;gap:12px;user-select:none}
-    .option-card:hover{border-color:var(--accent-purple);background:rgba(123,97,255,.06)}
-    .option-card.selected{border-color:var(--accent-purple);background:rgba(123,97,255,.12)}
-    .option-card.correct{border-color:var(--accent-green)!important;background:rgba(0,245,160,.1)!important;animation:glow-green .6s ease}
-    .option-card.wrong{border-color:var(--danger)!important;background:rgba(255,76,106,.1)!important;animation:shake .4s ease}
-    .option-card.disabled{pointer-events:none;opacity:.7}
-    .option-card .option-label{min-width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;background:rgba(255,255,255,.06);flex-shrink:0;transition:all .25s}
-    .option-card.selected .option-label{background:var(--accent-purple);color:#fff}
-    .option-card.correct .option-label{background:var(--accent-green);color:#0D0F1A}
-    .option-card.wrong .option-label{background:var(--danger);color:#fff}
-    .option-card .option-text{font-size:.95rem;line-height:1.5;padding-top:4px}
-    .checkbox-indicator{width:22px;height:22px;border:2px solid rgba(255,255,255,.2);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .25s;margin-top:2px}
-    .option-card.selected .checkbox-indicator{background:var(--accent-purple);border-color:var(--accent-purple)}
-    .badge-tipe{font-size:.75rem;padding:5px 12px;border-radius:20px;font-weight:600;letter-spacing:.3px}
-    .badge-hots{background:rgba(255,76,106,.15);color:var(--danger);border:1px solid rgba(255,76,106,.3)}
-    .badge-mcma{background:rgba(123,97,255,.15);color:var(--accent-purple);border:1px solid rgba(123,97,255,.3)}
-    .feedback-box{border-radius:12px;padding:16px 20px;margin-top:16px;animation:fadeIn .3s ease}
-    .feedback-correct{background:rgba(0,245,160,.08);border:1px solid rgba(0,245,160,.25)}
-    .feedback-wrong{background:rgba(255,76,106,.08);border:1px solid rgba(255,76,106,.25)}
-    .feedback-timeout{background:rgba(255,193,7,.08);border:1px solid rgba(255,193,7,.25)}
-    .question-slide-in{animation:slideInRight .4s ease}
-    .question-slide-out{animation:slideOutLeft .3s ease forwards}
-    .score-display{font-size:2.5rem;font-weight:700;font-family:'Space Grotesk',sans-serif}
-    .grade-badge{font-size:3.5rem;font-weight:700;font-family:'Space Grotesk',sans-serif;width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto}
-    .grade-a{background:linear-gradient(135deg,var(--accent-green),#00c97d);color:#0D0F1A}
-    .grade-b{background:linear-gradient(135deg,#00b4d8,#0077b6);color:#fff}
-    .grade-c{background:linear-gradient(135deg,#ffd166,#ef8c17);color:#0D0F1A}
-    .grade-d{background:linear-gradient(135deg,#f4845f,#e63946);color:#fff}
-    .grade-e{background:linear-gradient(135deg,#adb5bd,#6c757d);color:#fff}
-    .review-accordion{border:1px solid rgba(255,255,255,.06);border-radius:10px;overflow:hidden;margin-bottom:8px}
-    .review-header{padding:12px 16px;background:rgba(255,255,255,.03);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
-    .review-header:hover{background:rgba(255,255,255,.06)}
-    .review-body{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s}
-    .review-body.open{max-height:500px;padding:12px 16px}
-    .sound-toggle{cursor:pointer;opacity:.7;transition:opacity .2s}
-    .sound-toggle:hover{opacity:1}
-    .intro-icon{font-size:4rem;margin-bottom:1rem}
-    .stat-card{text-align:center;padding:20px}
-    .stat-value{font-size:1.8rem;font-weight:700;font-family:'Space Grotesk',sans-serif}
-    .stat-label{font-size:.8rem;opacity:.6;margin-top:4px}
-    .hero-gradient{background:linear-gradient(135deg,rgba(0,245,160,.08),rgba(123,97,255,.08));border:1px solid var(--card-border)}
-    @media(max-width:576px){
-      .score-display{font-size:2rem}
-      .grade-badge{width:80px;height:80px;font-size:2.8rem}
-      .option-card{padding:10px 14px;gap:8px}
-      .option-card .option-text{font-size:.88rem}
-      .btn-accent,.btn-purple{padding:10px 20px;font-size:.95rem}
-    }
-  </style>
+
+  <!-- CSS Custom -->
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-<!-- ========== SCREEN 1: INTRO ========== -->
+<!-- ========== SCREEN 1: INTRO + USERNAME ========== -->
 <div id="screen-intro" class="screen active align-items-center justify-content-center">
   <div class="container py-5" style="max-width:680px">
     <div class="text-center mb-4">
       <div class="intro-icon">&#x20BF;</div>
       <h1 class="display-font fw-bold mb-2" style="color:var(--accent-green);font-size:2.2rem">Crypto & Makro Quiz</h1>
       <p class="opacity-75" style="font-size:1.05rem">Uji pengetahuanmu seputar Crypto, DeFi, dan Ekonomi Makro!</p>
+    </div>
+    <!-- Username Input -->
+    <div class="card-custom p-4 mb-4">
+      <label for="input-username" class="display-font fw-bold mb-2" style="color:var(--accent-green);font-size:.95rem">Masukkan Username</label>
+      <p class="opacity-60 mb-2" style="font-size:.82rem">Nama asli atau username media sosialmu — akan tampil di leaderboard</p>
+      <input type="text" id="input-username" class="form-control username-input" placeholder="Contoh: SatoshiNakamoto" maxlength="30" autocomplete="off">
+      <div id="username-error" class="username-error"></div>
     </div>
     <div class="card-custom p-4 mb-4">
       <h5 class="display-font mb-3" style="color:var(--accent-purple)"><span class="me-2">&#x1F4CB;</span>Petunjuk</h5>
@@ -117,11 +60,18 @@
         </div>
       </div>
     </div>
-    <div class="d-grid">
-      <button class="btn btn-accent btn-lg" onclick="startQuiz()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="me-2" style="vertical-align:-3px"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        Mulai Quiz
-      </button>
+    <div class="row g-3">
+      <div class="col-sm-8 d-grid">
+        <button class="btn btn-accent btn-lg" onclick="startQuiz()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="me-2" style="vertical-align:-3px"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Mulai Quiz
+        </button>
+      </div>
+      <div class="col-sm-4 d-grid">
+        <button class="btn btn-purple btn-lg" onclick="showLeaderboard()">
+          &#x1F3C6; Leaderboard
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -153,6 +103,7 @@
       <div id="question-topik" class="mb-2" style="font-size:.78rem;opacity:.5;text-transform:uppercase;letter-spacing:1px"></div>
       <div id="question-content"></div>
       <div id="options-container" class="mt-3 d-flex flex-column gap-2"></div>
+      <div id="keyboard-hint" class="opacity-50 mt-2" style="font-size:.75rem"></div>
     </div>
     <!-- Feedback -->
     <div id="feedback-container" style="display:none"></div>
@@ -202,809 +153,43 @@
       <div id="review-list"></div>
     </div>
     <div class="row g-3 mb-5">
-      <div class="col-6 d-grid"><button class="btn btn-accent" onclick="restartQuiz()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="me-1" style="vertical-align:-2px"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Ulangi</button></div>
-      <div class="col-6 d-grid"><button class="btn btn-purple" onclick="toggleAllReviews()">Lihat Semua Review</button></div>
+      <div class="col-6 d-grid"><button class="btn btn-accent" onclick="showLeaderboard()">&#x1F3C6; Leaderboard</button></div>
+      <div class="col-6 d-grid"><button class="btn btn-purple" onclick="toggleAllReviews()">Review Jawaban</button></div>
+    </div>
+    <div class="text-center mb-5">
+      <button class="btn btn-accent btn-sm" onclick="goToIntro()" style="opacity:.7;font-size:.85rem">&#x21A9; Main Lagi (Ganti Username)</button>
     </div>
   </div>
 </div>
 
-<script>
-/* ================================================================
-   SVG ICON HELPER
-   ================================================================ */
-function svgIcon(type, size) {
-  size = size || 18;
-  const icons = {
-    check: '<polyline points="20 6 9 17 4 12"/>',
-    xmark: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
-    clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
-    star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
-    bolt: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
-    info: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
-    trophy: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>'
-  };
-  const stroke = 'currentColor';
-  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="'+stroke+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px">'+( icons[type]||'')+'</svg>';
-}
+<!-- ========== SCREEN 4: LEADERBOARD ========== -->
+<div id="screen-leaderboard" class="screen align-items-center">
+  <div class="container py-5" style="max-width:720px">
+    <div class="text-center mb-4">
+      <h2 class="display-font fw-bold mb-1">&#x1F3C6; Leaderboard</h2>
+      <p class="opacity-60">Top 20 pemain terbaik</p>
+    </div>
+    <div class="card-custom p-3 mb-4">
+      <div id="leaderboard-table" class="text-center opacity-50 py-4">Memuat data...</div>
+    </div>
+    <div class="row g-3 mb-5">
+      <div class="col-6 d-grid"><button class="btn btn-accent" onclick="goToIntro()">Main Lagi</button></div>
+      <div class="col-6 d-grid"><button class="btn btn-purple" onclick="showScreen('screen-result')">Lihat Hasil</button></div>
+    </div>
+  </div>
+</div>
 
-/* ================================================================
-   QUIZ DATA — 21 SOAL
-   ================================================================ */
-const quizData = [
-  /* ====== TIPE A — SEBAB-AKIBAT (7 soal) ====== */
-  {
-    id:1, tipe:"sebab-akibat", topik:"Crypto",
-    pernyataan:"Bitcoin Halving mengurangi laju inflasi supply Bitcoin secara signifikan.",
-    alasan:"Setiap halving, reward penambang dipotong setengah sehingga jumlah BTC baru yang masuk ke sirkulasi berkurang.",
-    opsi:[
-      {id:"A",teks:"Pernyataan BENAR, Alasan BENAR, dan Alasan merupakan sebab yang tepat"},
-      {id:"B",teks:"Pernyataan BENAR, Alasan BENAR, tetapi Alasan BUKAN sebab yang tepat"},
-      {id:"C",teks:"Pernyataan BENAR, Alasan SALAH"},
-      {id:"D",teks:"Pernyataan SALAH, Alasan BENAR"},
-      {id:"E",teks:"Pernyataan SALAH, Alasan SALAH"}
-    ],
-    jawaban_benar:["A"],
-    penjelasan:"Halving memangkas reward penambang (dari 6.25 ke 3.125 BTC di 2024), sehingga laju suplai baru turun drastis. Ini merupakan hubungan sebab-akibat langsung — penurunan reward menyebabkan inflasi supply berkurang.",
-    skor_penuh:4
-  },
-  {
-    id:2, tipe:"sebab-akibat", topik:"Ekonomi Makro",
-    pernyataan:"Ketika The Fed menaikkan suku bunga acuan (Fed Funds Rate), harga Bitcoin cenderung turun.",
-    alasan:"Kenaikan suku bunga membuat aset berisiko lebih menarik karena imbal hasil obligasi pemerintah meningkat.",
-    opsi:[
-      {id:"A",teks:"Pernyataan BENAR, Alasan BENAR, dan Alasan merupakan sebab yang tepat"},
-      {id:"B",teks:"Pernyataan BENAR, Alasan BENAR, tetapi Alasan BUKAN sebab yang tepat"},
-      {id:"C",teks:"Pernyataan BENAR, Alasan SALAH"},
-      {id:"D",teks:"Pernyataan SALAH, Alasan BENAR"},
-      {id:"E",teks:"Pernyataan SALAH, Alasan SALAH"}
-    ],
-    jawaban_benar:["B"],
-    penjelasan:"Pernyataan benar — historis menunjukkan BTC turun saat The Fed hawkish. Alasan juga benar bahwa yield obligasi naik, namun hubungannya bukan sebab langsung. Mekanisme utamanya adalah kenaikan suku bunga mengurangi likuiditas dan appetite terhadap aset berisiko, bukan sekadar obligasi menjadi lebih menarik.",
-    skor_penuh:4
-  },
-  {
-    id:3, tipe:"sebab-akibat", topik:"Crypto",
-    pernyataan:"De-peg pada stablecoin algoritmik dapat memicu efek domino mirip bank run di pasar kripto.",
-    alasan:"Stablecoin algoritmik dijamin penuh oleh cadangan dolar AS di bank sentral.",
-    opsi:[
-      {id:"A",teks:"Pernyataan BENAR, Alasan BENAR, dan Alasan merupakan sebab yang tepat"},
-      {id:"B",teks:"Pernyataan BENAR, Alasan BENAR, tetapi Alasan BUKAN sebab yang tepat"},
-      {id:"C",teks:"Pernyataan BENAR, Alasan SALAH"},
-      {id:"D",teks:"Pernyataan SALAH, Alasan BENAR"},
-      {id:"E",teks:"Pernyataan SALAH, Alasan SALAH"}
-    ],
-    jawaban_benar:["C"],
-    penjelasan:"Pernyataan benar — kasus UST/LUNA (2022) menunjukkan bagaimana de-peg memicu panic selling berantai. Alasan SALAH karena stablecoin algoritmik tidak dijamin cadangan dolar di bank sentral, melainkan menggunakan mekanisme minting/burning dengan token pendamping (seperti LUNA terhadap UST).",
-    skor_penuh:4
-  },
-  {
-    id:4, tipe:"sebab-akibat", topik:"Ekonomi Makro",
-    pernyataan:"Yield curve inversion (imbal hasil obligasi jangka pendek lebih tinggi dari jangka panjang) sering menjadi indikator awal resesi.",
-    alasan:"Investor memindahkan dana ke obligasi jangka panjang karena mengantisipasi perlambatan ekonomi di masa depan.",
-    opsi:[
-      {id:"A",teks:"Pernyataan BENAR, Alasan BENAR, dan Alasan merupakan sebab yang tepat"},
-      {id:"B",teks:"Pernyataan BENAR, Alasan BENAR, tetapi Alasan BUKAN sebab yang tepat"},
-      {id:"C",teks:"Pernyataan BENAR, Alasan SALAH"},
-      {id:"D",teks:"Pernyataan SALAH, Alasan BENAR"},
-      {id:"E",teks:"Pernyataan SALAH, Alasan SALAH"}
-    ],
-    jawaban_benar:["A"],
-    penjelasan:"Pernyataan benar — yield curve inversion (misal 2Y vs 10Y Treasury) telah memprediksi hampir semua resesi AS sejak 1950-an. Alasan juga benar dan merupakan sebab yang tepat: investor membeli obligasi jangka panjang (mendorong yield turun) karena ekspektasi ekonomi akan melambat, sehingga yield jangka panjang jatuh di bawah jangka pendek.",
-    skor_penuh:4
-  },
-  {
-    id:5, tipe:"sebab-akibat", topik:"Crypto",
-    pernyataan:"Menyediakan likuiditas di DeFi liquidity pool dapat menyebabkan kerugian yang disebut impermanent loss.",
-    alasan:"Impermanent loss terjadi karena rasio token dalam pool berubah mengikuti harga pasar, sehingga nilai aset penyedia likuiditas bisa lebih rendah dibanding hanya hold.",
-    opsi:[
-      {id:"A",teks:"Pernyataan BENAR, Alasan BENAR, dan Alasan merupakan sebab yang tepat"},
-      {id:"B",teks:"Pernyataan BENAR, Alasan BENAR, tetapi Alasan BUKAN sebab yang tepat"},
-      {id:"C",teks:"Pernyataan BENAR, Alasan SALAH"},
-      {id:"D",teks:"Pernyataan SALAH, Alasan BENAR"},
-      {id:"E",teks:"Pernyataan SALAH, Alasan SALAH"}
-    ],
-    jawaban_benar:["A"],
-    penjelasan:"Keduanya benar dan berhubungan sebab-akibat langsung. AMM (Automated Market Maker) seperti Uniswap menjaga rasio konstan (x*y=k). Ketika harga salah satu token berubah drastis, arbitraseur menyeimbangkan pool, menyebabkan penyedia likuiditas memiliki lebih banyak token yang murah dan lebih sedikit yang mahal — inilah impermanent loss.",
-    skor_penuh:4
-  },
-  {
-    id:6, tipe:"sebab-akibat", topik:"Ekonomi Makro",
-    pernyataan:"Quantitative Tightening (QT) oleh bank sentral cenderung memicu bear market pada aset berisiko termasuk kripto.",
-    alasan:"QT mengurangi jumlah uang beredar dengan membiarkan obligasi jatuh tempo tanpa reinvestasi, sehingga likuiditas pasar menurun.",
-    opsi:[
-      {id:"A",teks:"Pernyataan BENAR, Alasan BENAR, dan Alasan merupakan sebab yang tepat"},
-      {id:"B",teks:"Pernyataan BENAR, Alasan BENAR, tetapi Alasan BUKAN sebab yang tepat"},
-      {id:"C",teks:"Pernyataan BENAR, Alasan SALAH"},
-      {id:"D",teks:"Pernyataan SALAH, Alasan BENAR"},
-      {id:"E",teks:"Pernyataan SALAH, Alasan SALAH"}
-    ],
-    jawaban_benar:["A"],
-    penjelasan:"Keduanya benar dan merupakan sebab-akibat langsung. QT (kebalikan QE) mengecilkan neraca bank sentral dengan tidak memperbarui obligasi yang jatuh tempo, menarik likuiditas dari sistem keuangan. Berkurangnya likuiditas menekan valuasi aset berisiko termasuk saham dan kripto.",
-    skor_penuh:4
-  },
-  {
-    id:7, tipe:"sebab-akibat", topik:"Crypto",
-    pernyataan:"Adopsi Layer-2 (seperti Arbitrum, Optimism) menyebabkan gas fee di jaringan utama Ethereum turun secara signifikan.",
-    alasan:"Layer-2 memproses transaksi di luar mainnet Ethereum dan hanya mengirim bukti (proof) ke Layer-1, sehingga mengurangi kompetisi ruang blok di mainnet.",
-    opsi:[
-      {id:"A",teks:"Pernyataan BENAR, Alasan BENAR, dan Alasan merupakan sebab yang tepat"},
-      {id:"B",teks:"Pernyataan BENAR, Alasan BENAR, tetapi Alasan BUKAN sebab yang tepat"},
-      {id:"C",teks:"Pernyataan BENAR, Alasan SALAH"},
-      {id:"D",teks:"Pernyataan SALAH, Alasan BENAR"},
-      {id:"E",teks:"Pernyataan SALAH, Alasan SALAH"}
-    ],
-    jawaban_benar:["A"],
-    penjelasan:"Keduanya benar dan merupakan hubungan sebab-akibat langsung. Solusi Layer-2 seperti rollup (Optimistic & ZK) mengeksekusi transaksi off-chain lalu mengunggah bukti ke Ethereum. Ini mengalihkan volume transaksi dari mainnet, mengurangi permintaan ruang blok, dan menurunkan gas fee secara signifikan.",
-    skor_penuh:4
-  },
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
-  /* ====== TIPE B — MCMA (14 soal) ====== */
-  {
-    id:8, tipe:"mcma", topik:"Ekonomi Makro",
-    pertanyaan:"Manakah yang merupakan indikator inflasi yang umum digunakan oleh bank sentral?",
-    opsi:[
-      {id:"A",teks:"Consumer Price Index (CPI)"},
-      {id:"B",teks:"Producer Price Index (PPI)"},
-      {id:"C",teks:"Personal Consumption Expenditures (PCE)"},
-      {id:"D",teks:"Gross Domestic Product (GDP) Deflator"},
-      {id:"E",teks:"Market Capitalization Index"}
-    ],
-    jawaban_benar:["A","B","C","D"],
-    penjelasan:"CPI, PPI, PCE, dan GDP Deflator adalah indikator inflasi resmi. PCE terutama digunakan The Fed sebagai target inflasi. Market Capitalization Index bukan indikator inflasi — itu mengukur nilai pasar saham.",
-    skor_penuh:3
-  },
-  {
-    id:9, tipe:"mcma", topik:"Crypto",
-    pertanyaan:"Apa saja ciri-ciri Bear Market di pasar kripto?",
-    opsi:[
-      {id:"A",teks:"Harga aset turun lebih dari 20% dari puncak tertinggi"},
-      {id:"B",teks:"Volume perdagangan meningkat drastis dengan banyak pembeli baru"},
-      {id:"C",teks:"Sentimen pasar dominan fear dan pessimis"},
-      {id:"D",teks:"Dominasi Bitcoin cenderung meningkat saat altcoin melemah"},
-      {id:"E",teks:"Banyak proyek crypto yang menghentikan pengembangan atau bangkrut"}
-    ],
-    jawaban_benar:["A","C","D","E"],
-    penjelasan:"Bear market ditandai penurunan >20%, sentimen fear, dominasi BTC naik (flight to quality dalam crypto), dan banyak proyek gagal. Volume perdagangan yang meningkat dengan banyak pembeli baru justru ciri bull market.",
-    skor_penuh:3
-  },
-  {
-    id:10, tipe:"mcma", topik:"Crypto",
-    pertanyaan:"Manakah pernyataan yang benar tentang mekanisme konsensus Proof-of-Stake (PoS)?",
-    opsi:[
-      {id:"A",teks:"Validator dipilih berdasarkan jumlah token yang di-stake"},
-      {id:"B",teks:"Membutuhkan daya komputasi besar untuk menyelesaikan puzzle matematika"},
-      {id:"C",teks:"Lebih hemat energi dibanding Proof-of-Work"},
-      {id:"D",teks:"Validator yang berperilaku jahat dapat kehilangan stake (slashing)"},
-      {id:"E",teks:"Ethereum mengadopsi PoS melalui event The Merge pada September 2022"}
-    ],
-    jawaban_benar:["A","C","D","E"],
-    penjelasan:"PoS memilih validator berdasarkan stake, lebih hemat energi dari PoW (~99.95% lebih efisien), memiliki mekanisme slashing, dan Ethereum berpindah ke PoS via The Merge. Opsi B adalah deskripsi Proof-of-Work, bukan PoS.",
-    skor_penuh:3
-  },
-  {
-    id:11, tipe:"mcma", topik:"Ekonomi Makro",
-    pertanyaan:"Apa dampak dari kebijakan moneter kontraktif yang diterapkan bank sentral?",
-    opsi:[
-      {id:"A",teks:"Suku bunga pinjaman naik sehingga kredit berkurang"},
-      {id:"B",teks:"Inflasi cenderung terkendali atau menurun"},
-      {id:"C",teks:"Pertumbuhan ekonomi biasanya meningkat pesat"},
-      {id:"D",teks:"Nilai tukar mata uang domestik cenderung menguat"},
-      {id:"E",teks:"Harga aset berisiko seperti saham dan kripto cenderung tertekan"}
-    ],
-    jawaban_benar:["A","B","D","E"],
-    penjelasan:"Kebijakan kontraktif (naik suku bunga, QT) menekan kredit, mengendalikan inflasi, menguatkan mata uang, dan menekan aset berisiko. Namun justru memperlambat pertumbuhan ekonomi, bukan meningkatkannya.",
-    skor_penuh:3
-  },
-  {
-    id:12, tipe:"mcma", topik:"Crypto",
-    pertanyaan:"Kondisi apa saja yang dapat memicu terjadinya Altseason (musim altcoin)?",
-    opsi:[
-      {id:"A",teks:"Dominasi Bitcoin menurun signifikan"},
-      {id:"B",teks:"Bitcoin mengalami rally besar dan kemudian sideways/konsolidasi"},
-      {id:"C",teks:"The Fed menaikkan suku bunga secara agresif"},
-      {id:"D",teks:"Narasi dan hype seputar sektor tertentu (AI, DePIN, Gaming)"},
-      {id:"E",teks:"Likuiditas global meningkat dan risk appetite tinggi"}
-    ],
-    jawaban_benar:["A","B","D","E"],
-    penjelasan:"Altseason dipicu oleh penurunan dominasi BTC, BTC yang sudah rally lalu sideways (profit berputar ke altcoin), narasi sektor baru, dan likuiditas global tinggi. Kenaikan suku bunga agresif justru menekan semua aset berisiko dan tidak kondusif untuk altseason.",
-    skor_penuh:3
-  },
-  {
-    id:13, tipe:"mcma", topik:"Ekonomi Makro",
-    pertanyaan:"Manakah yang termasuk instrumen hedging terhadap risiko ekonomi makro?",
-    opsi:[
-      {id:"A",teks:"Emas dan obligasi pemerintah (government bonds)"},
-      {id:"B",teks:"Membeli aset kripto dengan leverage tinggi"},
-      {id:"C",teks:"Diversifikasi portofolio lintas kelas aset"},
-      {id:"D",teks:"Menggunakan kontrak derivatif seperti futures dan options"},
-      {id:"E",teks:"Menyimpan seluruh kekayaan dalam stablecoin tanpa bunga"}
-    ],
-    jawaban_benar:["A","C","D"],
-    penjelasan:"Emas, obligasi pemerintah, diversifikasi, dan derivatif adalah instrumen hedging klasik. Leverage tinggi justru memperbesar risiko, dan menyimpan di stablecoin tanpa bunga terkena risiko inflasi dan de-peg.",
-    skor_penuh:3
-  },
-  {
-    id:14, tipe:"mcma", topik:"Crypto",
-    pertanyaan:"Apa saja karakteristik Bitcoin yang mendukung posisinya sebagai 'store of value' (penyimpan nilai)?",
-    opsi:[
-      {id:"A",teks:"Supply terbatas hanya 21 juta BTC"},
-      {id:"B",teks:"Bersifat desentralisasi dan tidak bisa disita oleh satu pihak"},
-      {id:"C",teks:"Nilainya stabil dan tidak fluktuatif"},
-      {id:"D",teks:"Dapat diverifikasi oleh siapa saja (open-source dan transparan)"},
-      {id:"E",teks:"Semakin diterima oleh institusi besar sebagai aset cadangan"}
-    ],
-    jawaban_benar:["A","B","D","E"],
-    penjelasan:"BTC memiliki supply cap 21 juta, desentralisasi, open-source, dan adopsi institusional (MicroStrategy, ETF). Namun, BTC sangat fluktuatif — volatilitasnya jauh lebih tinggi dari emas, sehingga opsi C salah.",
-    skor_penuh:3
-  },
-  {
-    id:15, tipe:"mcma", topik:"Ekonomi Makro",
-    pertanyaan:"Apa alasan bank sentral mempertimbangkan penerbitan Central Bank Digital Currency (CBDC)?",
-    opsi:[
-      {id:"A",teks:"Meningkatkan efisiensi sistem pembayaran domestik"},
-      {id:"B",teks:"Memberikan akses keuangan bagi populasi yang unbanked"},
-      {id:"C",teks:"Menghilangkan sepenuhnya kebutuhan akan uang tunai fisik"},
-      {id:"D",teks:"Memperkuat kedaulatan moneter di tengah maraknya stablecoin swasta dan kripto"},
-      {id:"E",teks:"Memungkinkan implementasi kebijakan moneter yang lebih tepat sasaran"}
-    ],
-    jawaban_benar:["A","B","D","E"],
-    penjelasan:"CBDC bertujuan meningkatkan efisiensi pembayaran, inklusi keuangan, menjaga kedaulatan moneter, dan memungkinkan kebijakan moneter presisi. Namun tidak bertujuan menghilangkan uang tunai sepenuhnya — banyak negara berkomitmen tetap menyediakan uang tunai.",
-    skor_penuh:3
-  },
-  {
-    id:16, tipe:"mcma", topik:"Crypto",
-    pertanyaan:"Faktor-faktor apa yang secara signifikan menggerakkan harga Ethereum?",
-    opsi:[
-      {id:"A",teks:"Tingkat adopsi dan aktivitas di jaringan (TVL, jumlah transaksi)"},
-      {id:"B",teks:"Biaya gas fee yang selalu nol"},
-      {id:"C",teks:"Upgrade protokol (seperti The Merge, Dencun)"},
-      {id:"D",teks:"Regulasi terkait DeFi dan smart contract"},
-      {id:"E",teks:"Pertumbuhan ekosistem Layer-2 yang built on top Ethereum"}
-    ],
-    jawaban_benar:["A","C","D","E"],
-    penjelasan:"Harga ETH dipengaruhi adopsi jaringan, upgrade protokol, regulasi, dan ekosistem L2. Gas fee Ethereum TIDAK nol — justru sering mahal saat congestion tinggi, dan biaya gas ini merupakan cost yang mempengaruhi ekonomi jaringan.",
-    skor_penuh:3
-  },
-  {
-    id:17, tipe:"mcma", topik:"Ekonomi Makro",
-    pertanyaan:"Apa dampak Quantitative Easing (QE) terhadap pasar keuangan?",
-    opsi:[
-      {id:"A",teks:"Likuiditas pasar meningkat karena bank sentral membeli aset"},
-      {id:"B",teks:"Imbal hasil (yield) obligasi cenderung turun"},
-      {id:"C",teks:"Investor beralih ke aset berisiko untuk mencari return lebih tinggi"},
-      {id:"D",teks:"Nilai mata uang domestik selalu menguat drastis"},
-      {id:"E",teks:"Dapat menyebabkan inflasi aset (asset price inflation)"}
-    ],
-    jawaban_benar:["A","B","C","E"],
-    penjelasan:"QE meningkatkan likuiditas, menekan yield obligasi, mendorong investor ke aset berisiko (search for yield), dan menyebabkan inflasi aset. Namun QE cenderung melemahkan mata uang domestik (bukan menguatkan) karena peningkatan suplai uang.",
-    skor_penuh:3
-  },
-  {
-    id:18, tipe:"mcma", topik:"Crypto",
-    pertanyaan:"Manakah yang merupakan risiko utama di ekosistem DeFi dibandingkan CeFi?",
-    opsi:[
-      {id:"A",teks:"Risiko bug pada smart contract yang dapat dieksploitasi"},
-      {id:"B",teks:"Rug pull dan proyek scam tanpa tim yang terverifikasi"},
-      {id:"C",teks:"Risiko counterparty dari satu entitas terpusat"},
-      {id:"D",teks:"Risiko impermanent loss pada liquidity pool"},
-      {id:"E",teks:"Risiko oracle manipulation yang memberikan data harga salah"}
-    ],
-    jawaban_benar:["A","B","D","E"],
-    penjelasan:"DeFi menghadapi risiko smart contract bug, rug pull, impermanent loss, dan oracle manipulation. Risiko counterparty dari satu entitas terpusat adalah ciri CeFi (seperti FTX, Celsius), bukan DeFi yang justru bertujuan menghilangkan perantara terpusat.",
-    skor_penuh:3
-  },
-  {
-    id:19, tipe:"mcma", topik:"Crypto",
-    pertanyaan:"Indikator on-chain mana yang umumnya dianggap sinyal bullish untuk Bitcoin?",
-    opsi:[
-      {id:"A",teks:"Exchange reserve BTC menurun (banyak BTC keluar dari exchange)"},
-      {id:"B",teks:"Jumlah active address meningkat konsisten"},
-      {id:"C",teks:"MVRV ratio sangat tinggi (>3.5)"},
-      {id:"D",teks:"Long-term holder supply terus bertambah"},
-      {id:"E",teks:"Hash rate jaringan mencapai all-time high baru"}
-    ],
-    jawaban_benar:["A","B","D","E"],
-    penjelasan:"BTC keluar exchange (supply shock), active address naik, long-term holder accumulation, dan hash rate ATH semuanya sinyal bullish. Namun MVRV ratio >3.5 justru sinyal overheated/potensi top — historis menunjukkan MVRV tinggi berkorelasi dengan puncak siklus.",
-    skor_penuh:3
-  },
-  {
-    id:20, tipe:"mcma", topik:"Ekonomi Makro",
-    pertanyaan:"Apa peran IMF dan World Bank dalam menangani krisis ekonomi makro global?",
-    opsi:[
-      {id:"A",teks:"IMF memberikan pinjaman darurat kepada negara yang mengalami krisis neraca pembayaran"},
-      {id:"B",teks:"World Bank fokus pada proyek pembangunan jangka panjang dan pengentasan kemiskinan"},
-      {id:"C",teks:"IMF dapat mencetak uang sendiri untuk menstimulasi ekonomi global"},
-      {id:"D",teks:"IMF memberikan rekomendasi kebijakan fiskal dan moneter sebagai syarat pinjaman"},
-      {id:"E",teks:"World Bank memberikan technical assistance dan capacity building kepada negara berkembang"}
-    ],
-    jawaban_benar:["A","B","D","E"],
-    penjelasan:"IMF memberikan pinjaman darurat dengan syarat reformasi kebijakan (conditionalities), World Bank fokus pembangunan jangka panjang, dan keduanya memberikan technical assistance. Namun IMF TIDAK bisa mencetak uang — hanya bank sentral yang memiliki kewenangan itu.",
-    skor_penuh:3
-  },
-  {
-    id:21, tipe:"mcma", topik:"Crypto",
-    pertanyaan:"Manakah jenis stablecoin berdasarkan mekanisme peg-nya yang benar?",
-    opsi:[
-      {id:"A",teks:"Fiat-collateralized: dijamin 1:1 oleh cadangan fiat (contoh: USDT, USDC)"},
-      {id:"B",teks:"Crypto-collateralized: dijamin oleh aset kripto dengan over-collateralization (contoh: DAI)"},
-      {id:"C",teks:"Algoritmik: menggunakan algoritma minting/burning tanpa jaminan penuh (contoh: UST)"},
-      {id:"D",teks:"Commodity-backed: dijamin oleh komoditas fisik seperti emas (contoh: PAXG)"}
-    ],
-    jawaban_benar:["A","B","C","D"],
-    penjelasan:"Keempat jenis stablecoin tersebut valid. Fiat-collateralized (USDT/USDC), crypto-collateralized (DAI via MakerDAO), algoritmik (UST yang gagal), dan commodity-backed (PAXG dijamin emas) adalah kategori yang diakui dalam industri.",
-    skor_penuh:3
-  }
-];
+<!-- Firebase config (obfuscated) -->
+<script src="assets/js/fb.js"></script>
 
-/* ================================================================
-   GAME STATE
-   ================================================================ */
-let state = {
-  questions: [],
-  currentIndex: 0,
-  score: 0,
-  skorHots: 0,
-  skorMcma: 0,
-  answers: [],
-  timerInterval: null,
-  timeLeft: 0,
-  soundEnabled: true,
-  submitted: false
-};
+<!-- Bootstrap JS lokal -->
+<script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
 
-/* ================================================================
-   FISHER-YATES SHUFFLE
-   ================================================================ */
-function shuffle(arr) {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-function prepareQuestions() {
-  const hotsIds = [1,2,3,4,5,6,7];
-  const mcmaIds = [8,9,10,11,12,13,14,15,16,17,18,19,20,21];
-  const shuffledHots = shuffle(hotsIds);
-  const shuffledMcma = shuffle(mcmaIds);
-  // positions 1,4,7,10,13,16,19 → HOTS (index 0,3,6,9,12,15,18)
-  const positions = new Array(21);
-  const hotsPositions = [0,3,6,9,12,15,18];
-  const mcmaPositions = [1,2,4,5,7,8,10,11,13,14,16,17,19,20];
-  hotsPositions.forEach((pos, i) => { positions[pos] = shuffledHots[i]; });
-  mcmaPositions.forEach((pos, i) => { positions[pos] = shuffledMcma[i]; });
-  state.questions = positions.map(id => quizData.find(q => q.id === id));
-}
-
-/* ================================================================
-   SCREEN MANAGEMENT
-   ================================================================ */
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-/* ================================================================
-   START QUIZ
-   ================================================================ */
-function startQuiz() {
-  prepareQuestions();
-  state.currentIndex = 0;
-  state.score = 0;
-  state.skorHots = 0;
-  state.skorMcma = 0;
-  state.answers = [];
-  showScreen('screen-quiz');
-  renderQuestion();
-}
-
-/* ================================================================
-   RENDER QUESTION
-   ================================================================ */
-function renderQuestion() {
-  const q = state.questions[state.currentIndex];
-  const i = state.currentIndex;
-  state.submitted = false;
-
-  // Badge
-  const badge = document.getElementById('badge-tipe');
-  if (q.tipe === 'sebab-akibat') {
-    badge.className = 'badge-tipe badge-hots';
-    badge.textContent = 'HOTS Sebab-Akibat';
-  } else {
-    badge.className = 'badge-tipe badge-mcma';
-    badge.textContent = 'MCMA';
-  }
-
-  // Counter
-  document.getElementById('soal-counter').textContent = 'Soal ' + (i+1) + ' / 21';
-
-  // Progress
-  document.getElementById('progress-bar').style.width = ((i+1)/21*100) + '%';
-
-  // Score
-  document.getElementById('current-score').textContent = state.score;
-
-  // Topic
-  document.getElementById('question-topik').textContent = q.topik;
-
-  // Content
-  const content = document.getElementById('question-content');
-  if (q.tipe === 'sebab-akibat') {
-    content.innerHTML =
-      '<div class="mb-3 p-3 rounded-3" style="background:rgba(0,245,160,.05);border-left:3px solid var(--accent-green)">' +
-        '<div style="font-size:.78rem;color:var(--accent-green);font-weight:600;margin-bottom:4px">PERNYATAAN</div>' +
-        '<div style="font-size:.95rem;line-height:1.6">' + q.pernyataan + '</div>' +
-      '</div>' +
-      '<div class="mb-2 p-3 rounded-3" style="background:rgba(123,97,255,.05);border-left:3px solid var(--accent-purple)">' +
-        '<div style="font-size:.78rem;color:var(--accent-purple);font-weight:600;margin-bottom:4px">ALASAN</div>' +
-        '<div style="font-size:.95rem;line-height:1.6">' + q.alasan + '</div>' +
-      '</div>' +
-      '<div class="mt-3 opacity-60" style="font-size:.85rem">Pilih hubungan yang tepat antara Pernyataan dan Alasan:</div>';
-  } else {
-    content.innerHTML =
-      '<div style="font-size:1.05rem;line-height:1.6;font-weight:500">' + q.pertanyaan + '</div>' +
-      '<div class="mt-2 opacity-60" style="font-size:.82rem">Pilih semua jawaban yang benar (bisa lebih dari satu):</div>';
-  }
-
-  // Options
-  const optContainer = document.getElementById('options-container');
-  optContainer.innerHTML = '';
-  q.opsi.forEach((opt, idx) => {
-    const div = document.createElement('div');
-    div.className = 'option-card';
-    div.setAttribute('data-id', opt.id);
-    if (q.tipe === 'sebab-akibat') {
-      div.innerHTML = '<div class="option-label">(' + opt.id + ')</div><div class="option-text">' + opt.teks + '</div>';
-    } else {
-      div.innerHTML = '<div class="checkbox-indicator"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="option-text">' + opt.teks + '</div>';
-    }
-    div.addEventListener('click', () => selectOption(opt.id, q.tipe));
-    optContainer.appendChild(div);
-  });
-
-  // Keyboard shortcuts hint
-  const keyHint = document.createElement('div');
-  keyHint.className = 'opacity-50 mt-2';
-  keyHint.style.fontSize = '.75rem';
-  keyHint.textContent = q.tipe === 'sebab-akibat' ? 'Keyboard: tekan 1-5 untuk memilih, Enter untuk submit' : 'Keyboard: tekan 1-5 toggle opsi, Enter untuk submit, Space toggle semua';
-  optContainer.parentNode.appendChild(keyHint);
-
-  // Buttons
-  document.getElementById('btn-submit').style.display = '';
-  document.getElementById('btn-submit').disabled = true;
-  document.getElementById('btn-next').style.display = 'none';
-  document.getElementById('feedback-container').style.display = 'none';
-
-  // Timer
-  startTimer(q.tipe === 'sebab-akibat' ? 45 : 60);
-
-  // Animation
-  const container = document.getElementById('question-container');
-  container.classList.remove('question-slide-in');
-  void container.offsetWidth;
-  container.classList.add('question-slide-in');
-
-  window.scrollTo({top: 0, behavior: 'smooth'});
-}
-
-/* ================================================================
-   OPTION SELECTION
-   ================================================================ */
-function selectOption(optId, tipe) {
-  if (state.submitted) return;
-  const q = state.questions[state.currentIndex];
-  if (tipe === 'sebab-akibat') {
-    // Radio behavior - only one
-    document.querySelectorAll('#options-container .option-card').forEach(c => c.classList.remove('selected'));
-    document.querySelector('#options-container .option-card[data-id="'+optId+'"]').classList.add('selected');
-    document.getElementById('btn-submit').disabled = false;
-  } else {
-    // Checkbox behavior - toggle
-    const card = document.querySelector('#options-container .option-card[data-id="'+optId+'"]');
-    card.classList.toggle('selected');
-    const anySelected = document.querySelectorAll('#options-container .option-card.selected').length > 0;
-    document.getElementById('btn-submit').disabled = !anySelected;
-  }
-}
-
-function getSelectedOptions() {
-  const selected = [];
-  document.querySelectorAll('#options-container .option-card.selected').forEach(c => {
-    selected.push(c.getAttribute('data-id'));
-  });
-  return selected;
-}
-
-/* ================================================================
-   SCORING ENGINE
-   ================================================================ */
-function hitungSkor(tipe, jawabanUser, jawabanBenar) {
-  if (tipe === 'sebab-akibat') {
-    if (jawabanUser.length === 0) return 0;
-    if (jawabanUser[0] === jawabanBenar[0]) return 4;
-    return -1;
-  }
-  if (tipe === 'mcma') {
-    if (jawabanUser.length === 0) return 0;
-    // Check if any wrong answer selected
-    const hasWrong = jawabanUser.some(a => !jawabanBenar.includes(a));
-    if (hasWrong) return 0;
-    // Check if all correct answers selected
-    const allCorrect = jawabanBenar.every(a => jawabanUser.includes(a));
-    if (allCorrect) return 3;
-    // Partial: at least 1 correct, no wrong
-    return 1;
-  }
-  return 0;
-}
-
-/* ================================================================
-   TIMER
-   ================================================================ */
-function startTimer(seconds) {
-  clearInterval(state.timerInterval);
-  state.timeLeft = seconds;
-  const maxTime = seconds;
-  updateTimerDisplay(maxTime);
-  state.timerInterval = setInterval(() => {
-    state.timeLeft--;
-    updateTimerDisplay(maxTime);
-    if (state.timeLeft <= 0) {
-      clearInterval(state.timerInterval);
-      autoSubmitTimeout();
-    }
-  }, 1000);
-}
-
-function updateTimerDisplay(maxTime) {
-  const el = document.getElementById('timer-text');
-  const bar = document.getElementById('timer-bar');
-  el.textContent = state.timeLeft + 's';
-  const pct = (state.timeLeft / maxTime) * 100;
-  bar.style.width = pct + '%';
-  if (state.timeLeft <= 5) {
-    bar.style.background = 'var(--danger)';
-    el.classList.add('timer-danger');
-  } else if (state.timeLeft <= 15) {
-    bar.style.background = '#ffd166';
-    el.classList.remove('timer-danger');
-  } else {
-    bar.style.background = 'var(--accent-green)';
-    el.classList.remove('timer-danger');
-  }
-}
-
-function autoSubmitTimeout() {
-  if (state.submitted) return;
-  const q = state.questions[state.currentIndex];
-  const userAns = getSelectedOptions();
-  showFeedback(q, userAns, true);
-}
-
-/* ================================================================
-   SUBMIT ANSWER
-   ================================================================ */
-function submitAnswer() {
-  if (state.submitted) return;
-  clearInterval(state.timerInterval);
-  const q = state.questions[state.currentIndex];
-  const userAns = getSelectedOptions();
-  showFeedback(q, userAns, false);
-}
-
-function showFeedback(q, userAns, isTimeout) {
-  state.submitted = true;
-  const skor = isTimeout && userAns.length === 0 ? 0 : hitungSkor(q.tipe, userAns, q.jawaban_benar);
-  state.score += skor;
-  if (q.tipe === 'sebab-akibat') state.skorHots += skor;
-  else state.skorMcma += skor;
-
-  state.answers.push({
-    question: q,
-    userAnswer: userAns,
-    score: skor,
-    timeout: isTimeout && userAns.length === 0
-  });
-
-  document.getElementById('current-score').textContent = state.score;
-
-  // Highlight options
-  document.querySelectorAll('#options-container .option-card').forEach(card => {
-    const id = card.getAttribute('data-id');
-    card.classList.add('disabled');
-    if (q.jawaban_benar.includes(id)) {
-      card.classList.add('correct');
-    } else if (userAns.includes(id)) {
-      card.classList.add('wrong');
-    }
-  });
-
-  // Feedback box
-  const fb = document.getElementById('feedback-container');
-  let fbClass, fbIcon, fbTitle;
-  if (isTimeout && userAns.length === 0) {
-    fbClass = 'feedback-timeout';
-    fbIcon = svgIcon('clock', 20);
-    fbTitle = 'Waktu Habis! (Skor: 0)';
-  } else if (skor > 0) {
-    fbClass = 'feedback-correct';
-    fbIcon = svgIcon('check', 20);
-    fbTitle = (skor === (q.tipe==='sebab-akibat'?4:3)) ? 'Sempurna! (+' + skor + ' poin)' : 'Sebagian Benar (+' + skor + ' poin)';
-  } else {
-    fbClass = 'feedback-wrong';
-    fbIcon = svgIcon('xmark', 20);
-    fbTitle = 'Salah (' + skor + ' poin)';
-  }
-
-  fb.style.display = '';
-  fb.innerHTML = '<div class="feedback-box ' + fbClass + '">' +
-    '<div class="d-flex align-items-center gap-2 mb-2 fw-bold">' + fbIcon + ' ' + fbTitle + '</div>' +
-    '<div style="font-size:.9rem;line-height:1.6;opacity:.85">' +
-      '<strong>Penjelasan:</strong> ' + q.penjelasan +
-    '</div>' +
-  '</div>';
-
-  // Sound
-  if (state.soundEnabled) playSound(skor > 0 ? 'correct' : 'wrong');
-
-  // Buttons
-  document.getElementById('btn-submit').style.display = 'none';
-  document.getElementById('btn-next').style.display = '';
-}
-
-/* ================================================================
-   NEXT QUESTION
-   ================================================================ */
-function nextQuestion() {
-  state.currentIndex++;
-  if (state.currentIndex >= state.questions.length) {
-    showResults();
-  } else {
-    renderQuestion();
-  }
-}
-
-/* ================================================================
-   RESULTS
-   ================================================================ */
-function showResults() {
-  clearInterval(state.timerInterval);
-  showScreen('screen-result');
-  const maxSkor = 70;
-  const pct = Math.round((state.score / maxSkor) * 100);
-  let grade, gradeTitle, gradeClass;
-  if (pct >= 90) { grade='A'; gradeTitle='Crypto Expert \u{1F680}'; gradeClass='grade-a'; }
-  else if (pct >= 75) { grade='B'; gradeTitle='DeFi Analyst \u{1F4CA}'; gradeClass='grade-b'; }
-  else if (pct >= 60) { grade='C'; gradeTitle='Hodler Sejati \u{1F48E}'; gradeClass='grade-c'; }
-  else if (pct >= 45) { grade='D'; gradeTitle='Blockchain Learner \u{1F4DA}'; gradeClass='grade-d'; }
-  else { grade='E'; gradeTitle='Back to Basics \u{1F504}'; gradeClass='grade-e'; }
-
-  const badge = document.getElementById('grade-badge');
-  badge.className = 'grade-badge ' + gradeClass;
-  badge.textContent = grade;
-
-  document.getElementById('final-score').textContent = state.score + ' / ' + maxSkor;
-  document.getElementById('final-pct').textContent = pct + '% benar';
-  document.getElementById('grade-title').textContent = gradeTitle;
-  document.getElementById('grade-title').style.color = grade==='A'?'var(--accent-green)':grade==='B'?'#00b4d8':grade==='C'?'#ffd166':grade==='D'?'#f4845f':'#adb5bd';
-
-  document.getElementById('skor-hots').textContent = state.skorHots + '/28';
-  document.getElementById('skor-mcma').textContent = state.skorMcma + '/42';
-
-  // Review list
-  const reviewList = document.getElementById('review-list');
-  reviewList.innerHTML = '';
-  state.answers.forEach((ans, idx) => {
-    const q = ans.question;
-    const isCorrect = ans.score > 0 && (q.tipe==='sebab-akibat' ? ans.score===4 : ans.score===3);
-    const statusColor = ans.timeout ? '#ffc107' : isCorrect ? 'var(--accent-green)' : 'var(--danger)';
-    const statusText = ans.timeout ? 'Timeout' : isCorrect ? 'Benar' : (ans.score > 0 ? 'Parsial' : 'Salah');
-
-    const acc = document.createElement('div');
-    acc.className = 'review-accordion';
-    acc.innerHTML =
-      '<div class="review-header" onclick="this.nextElementSibling.classList.toggle(\'open\')">' +
-        '<div><span style="color:'+statusColor+';font-weight:600">['+statusText+']</span> Soal '+(idx+1)+': '+q.topik+' — '+q.tipe+'</div>' +
-        '<div style="font-weight:600;color:'+statusColor+'">'+ans.score+' pts</div>' +
-      '</div>' +
-      '<div class="review-body">' +
-        (q.tipe==='sebab-akibat' ?
-          '<div class="mb-2"><strong>Pernyataan:</strong> '+q.pernyataan+'</div><div class="mb-2"><strong>Alasan:</strong> '+q.alasan+'</div>' :
-          '<div class="mb-2"><strong>Pertanyaan:</strong> '+q.pertanyaan+'</div>') +
-        '<div class="mb-2"><strong>Jawaban Anda:</strong> '+(ans.userAnswer.length?ans.userAnswer.join(', '):'<em>Tidak dijawab</em>')+'</div>' +
-        '<div class="mb-2"><strong>Jawaban Benar:</strong> <span style="color:var(--accent-green)">'+q.jawaban_benar.join(', ')+'</span></div>' +
-        '<div style="opacity:.8;font-size:.88rem"><strong>Penjelasan:</strong> '+q.penjelasan+'</div>' +
-      '</div>';
-    reviewList.appendChild(acc);
-  });
-}
-
-function toggleAllReviews() {
-  const bodies = document.querySelectorAll('.review-body');
-  const anyOpen = Array.from(bodies).some(b => b.classList.contains('open'));
-  bodies.forEach(b => { anyOpen ? b.classList.remove('open') : b.classList.add('open'); });
-}
-
-function restartQuiz() {
-  startQuiz();
-}
-
-/* ================================================================
-   SOUND EFFECTS (Web Audio API — no external files)
-   ================================================================ */
-let audioCtx = null;
-function playSound(type) {
-  try {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    gain.gain.value = 0.15;
-    if (type === 'correct') {
-      osc.frequency.value = 880;
-      osc.type = 'sine';
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-      osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-    } else {
-      osc.frequency.value = 220;
-      osc.type = 'square';
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
-      osc.start(); osc.stop(audioCtx.currentTime + 0.4);
-    }
-  } catch(e) {}
-}
-
-function toggleSound() {
-  state.soundEnabled = !state.soundEnabled;
-  document.getElementById('icon-sound-on').style.display = state.soundEnabled ? '' : 'none';
-  document.getElementById('icon-sound-off').style.display = state.soundEnabled ? 'none' : '';
-}
-
-/* ================================================================
-   KEYBOARD SHORTCUTS
-   ================================================================ */
-document.addEventListener('keydown', function(e) {
-  const quizScreen = document.getElementById('screen-quiz');
-  if (!quizScreen.classList.contains('active')) return;
-
-  const q = state.questions[state.currentIndex];
-  if (!q) return;
-
-  // Number keys 1-5
-  if (e.key >= '1' && e.key <= '5') {
-    e.preventDefault();
-    const optIdx = parseInt(e.key) - 1;
-    if (optIdx < q.opsi.length && !state.submitted) {
-      selectOption(q.opsi[optIdx].id, q.tipe);
-    }
-  }
-
-  // Enter to submit / next
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    if (!state.submitted) {
-      if (!document.getElementById('btn-submit').disabled) submitAnswer();
-    } else {
-      nextQuestion();
-    }
-  }
-
-  // Space toggle all for MCMA
-  if (e.key === ' ' && q.tipe === 'mcma' && !state.submitted) {
-    e.preventDefault();
-    const allSelected = document.querySelectorAll('#options-container .option-card.selected').length === q.opsi.length;
-    document.querySelectorAll('#options-container .option-card').forEach(card => {
-      if (allSelected) card.classList.remove('selected');
-      else card.classList.add('selected');
-    });
-    const anySelected = document.querySelectorAll('#options-container .option-card.selected').length > 0;
-    document.getElementById('btn-submit').disabled = !anySelected;
-  }
-});
-</script>
+<!-- JS App -->
+<script src="assets/js/app.js"></script>
 </body>
 </html>

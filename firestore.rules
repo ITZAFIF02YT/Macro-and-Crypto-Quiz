@@ -1,0 +1,17 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    match /leaderboard/{docId} {
+      allow read: if true;
+      allow write: if request.resource.data.keys()
+        .hasOnly(['username', 'score', 'grade', 'timestamp'])
+        && request.resource.data.score is int
+        && request.resource.data.score >= 0
+        && request.resource.data.score <= 70
+        && request.resource.data.username.size() >= 2
+        && request.resource.data.username.size() <= 30
+        && request.resource.data.grade.size() == 1
+        && request.resource.data.grade.matches('^[A-E]$');
+    }
+  }
+}
